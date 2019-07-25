@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model {
+
+    protected $table = 'category';
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'exif' => 'array',
+    ];
+}

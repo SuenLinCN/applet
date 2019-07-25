@@ -31,7 +31,22 @@ class CategoryController extends Controller
     public function create(Content $content) {
         return $content
         ->header('添加分类')
+        ->breadcrumb(
+            ['text' => '文章分类', 'url' => '/category'],
+            ['text' => '添加分类']
+        )
         ->body($this->form());
+    }
+    
+    public function edit($id,Content $content) {
+        return $content
+        ->header('编辑分类')
+        ->breadcrumb(
+            ['text' => '文章分类', 'url' => '/category'],
+            ['text' => $id],
+            ['text' => '编辑分类']
+        )
+        ->body($this->form()->edit($id));
     }
     
     /**

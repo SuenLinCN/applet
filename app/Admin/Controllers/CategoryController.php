@@ -44,7 +44,7 @@ class CategoryController extends Controller
         
         $grid->column('id', __('ID'));
         $grid->column('title', __('标题'));
-        $grid->column('parent_id', __('父ID'));
+        $grid->column ('parentJoin.title',' 父ID');
         $grid->column('updated_at', __('修改时间'));
         $grid->column('created_at', __('创建时间'));
         

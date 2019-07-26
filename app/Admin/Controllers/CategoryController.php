@@ -95,9 +95,8 @@ class CategoryController extends Controller
         $dynamic = $cate->getParentID();
         $dynamic = array_column($dynamic, null,'id');
         $dynamic = Arr::pluck($dynamic,'title','id');
-      
         $form->select('parent_id', __('父id'))->options($dynamic);;
-        $form->text('title', __('标题'));
+        $form->text('title', __('标题'))->rules('required');
         $form->text('weigh', __('权重'));
         return $form;
     }

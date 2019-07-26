@@ -34,19 +34,39 @@ class ArticleController extends AdminController
         ->body($this->form());
     }
     
+    public function edit($id,Content $content) {
+        return $content
+        ->header('编辑分章')
+        ->breadcrumb(
+            ['text' => '文章管理', 'url' => '/article'],
+            ['text' => $id],
+            ['text' => '编辑分章']
+            )
+            ->body($this->form()->edit($id));
+    }
+    
     protected function grid()
     {
         $grid = new Grid(new Article);
         
         $grid->column('id', __('ID'));
         $grid->column('title', __('标题'));
-        $grid->column('parent_id', __('父ID'));
-        $grid->column('type', __('类型'));
+        $grid->column ('parentJoin.title',' 父ID');
+        $grid->column('type', __('类型'))->display(function ($released) {
+            return $released == 0 ? '文章' : '视频';
+        });
         $grid->column('thumbnail', __('缩略图'));
-        $grid->column('is_rec', __('是否推荐'));
+        $grid->column('is_rec', __('推荐'))->display(function ($released) {
+            return $released == 0 ? '不推荐' : '推荐';
+        });
         $grid->column('updated_at', __('修改时间'));
         $grid->column('created_at', __('创建时间'));
 
+        // 不显示查看按钮
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
+        
         // 禁止查询
         $grid->disableFilter();
         
@@ -81,16 +101,16 @@ class ArticleController extends AdminController
     {
         $art = new Article;
         $form = new Form($art);
-        $form->text('title', __('标题'));
+        $form->text('title', __('标题'))->rules('required');
         $dynamic = $art->getParentID();
         $dynamic = array_column($dynamic, null,'id');
         $dynamic = Arr::pluck($dynamic,'title','id');
-        $form->select('parent_id', __('父id'))->options($dynamic);
+        $form->select('parent_id', __('父id'))->options($dynamic)->rules('required');
         $form->select('type', __('类型'))->options(['文章','视频']);
-        $form->text('thumbnail', __('缩略图'));
-        $form->image('img', __('大图'));
-        $form->text('url', __('视频地址'));
-        $form->textarea('content', __('编辑器'));
+        $form->image('thumbnail', __('缩略图'))->rules('required|image');
+        $form->image('img', __('大图'))->rules('image');
+        $form->file('url', __('视频地址'))->attribute(['accept' => '.mp4']);
+        $form->ckeditor('content', __('编辑器'));
         $form->select('is_rec', __('是否推荐'))->options(['否','是']);
 
         return $form;

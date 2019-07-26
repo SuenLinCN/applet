@@ -9,7 +9,6 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Grid;
 use Encore\Admin\Form;
-use Encore\Admin\Show;
 use Illuminate\Support\Arr;
 
 class CategoryController extends Controller
@@ -69,9 +68,9 @@ class CategoryController extends Controller
         });
         
         // filter($callback)方法用来设置表格的简单搜索框
-        $grid->filter(function ($filter) {
-            $filter->equal('title',  '标题');
-        });
+//         $grid->filter(function ($filter) {
+//             $filter->equal('title',  '标题');
+//         });
         
         // 禁止查询
         $grid->disableFilter();
@@ -82,25 +81,6 @@ class CategoryController extends Controller
         // 快捷搜索
         $grid->quickSearch('id','title');
         return $grid;
-    }
-    
-    /**
-     * Make a show builder.
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(Category::findOrFail($id));
-        
-        $show->field('id', __('Id'));
-        $show->field('title', __('Title'));
-        $show->field('parent_id', __('Parent id'));
-        $show->field('weigh', __('Weigh'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-            
-        return $show;
     }
     
     /**

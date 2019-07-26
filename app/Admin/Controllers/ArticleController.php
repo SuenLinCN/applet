@@ -107,10 +107,10 @@ class ArticleController extends AdminController
         $dynamic = Arr::pluck($dynamic,'title','id');
         $form->select('parent_id', __('父id'))->options($dynamic)->rules('required');
         $form->select('type', __('类型'))->options(['文章','视频']);
-        $form->image('thumbnail', __('缩略图'))->rules('required|image');
-        $form->image('img', __('大图'))->rules('image');
+        $form->image('thumbnail', __('缩略图'))->required()->attribute(['accept' => '.jpg,.png']);
+        $form->image('img', __('大图'))->attribute(['accept' => '.jpg,.png']);
         $form->file('url', __('视频地址'))->attribute(['accept' => '.mp4']);
-        $form->ckeditor('content', __('编辑器'));
+        $form->ckeditor('content', __('编辑器'))->required();
         $form->select('is_rec', __('是否推荐'))->options(['否','是']);
 
         return $form;

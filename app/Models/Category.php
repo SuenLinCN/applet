@@ -16,4 +16,8 @@ class Category extends Model
     public function getParentID() {
         return $this->all(['id','title'])->where('id','<=',4)->toArray();
     }
+    
+//     public function store() {
+//         return $this->belongsToMany(Article::class,'id','parent_id');
+//     }
 }

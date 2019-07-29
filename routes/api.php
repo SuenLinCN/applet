@@ -16,6 +16,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('list', 'CommonController@list');
-Route::post('detail', 'CommonController@detail');
-Route::post('hotdata', 'CommonController@hotData');
+Route::post('list', 'CommonController@list');           // 列表数据
+Route::post('menu', 'CommonController@buttom');         // 底部菜单数据
+Route::post('detail', 'CommonController@detail');       // 详情数据
+Route::post('hotdata', 'CommonController@hotData');     // 热门数据,默认数据

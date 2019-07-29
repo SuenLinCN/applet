@@ -6,7 +6,7 @@ use App\Models\Article;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-// use Encore\Admin\Show;
+use Encore\Admin\Show;
 use Illuminate\Support\Arr;
 use Encore\Admin\Layout\Content;
 
@@ -41,9 +41,20 @@ class ArticleController extends AdminController
             ['text' => '文章管理', 'url' => '/article'],
             ['text' => $id],
             ['text' => '编辑分章']
-            )
-            ->body($this->form()->edit($id));
+        )
+        ->body($this->form()->edit($id));
     }
+    
+//     public function store() {
+//         return $this->form()->store();
+//     }
+    
+//     public function update($id) {
+//         $params = $_REQUEST;
+//         $params['duration'] = '00:16:31';
+        
+//         return $this->form()->update($id,$params);
+//     }
     
     protected function grid()
     {
@@ -78,24 +89,23 @@ class ArticleController extends AdminController
         return $grid;
     }
 
-//     protected function detail($id)
-//     {
-//         $show = new Show(Article::findOrFail($id));
+    protected function detail($id) {
+        $show = new Show(Article::findOrFail($id));
 
-//         $show->field('id', __('Id'));
-//         $show->field('title', __('Title'));
-//         $show->field('parent_id', __('Parent id'));
-//         $show->field('type', __('Type'));
-//         $show->field('thumbnail', __('Thumbnail'));
-//         $show->field('img', __('Img'));
-//         $show->field('url', __('Url'));
-//         $show->field('content', __('Content'));
-//         $show->field('is_rec', __('Is rec'));
-//         $show->field('created_at', __('Created at'));
-//         $show->field('updated_at', __('Updated at'));
+        $show->field('id', __('Id'));
+        $show->field('title', __('Title'));
+        $show->field('parent_id', __('Parent id'));
+        $show->field('type', __('Type'));
+        $show->field('thumbnail', __('Thumbnail'));
+        $show->field('img', __('Img'));
+        $show->field('url', __('Url'));
+        $show->field('content', __('Content'));
+        $show->field('is_rec', __('Is rec'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
 
-//         return $show;
-//     }
+        return $show;
+    }
 
     protected function form()
     {
@@ -107,9 +117,10 @@ class ArticleController extends AdminController
         $dynamic = Arr::pluck($dynamic,'title','id');
         $form->select('parent_id', __('父id'))->options($dynamic)->rules('required');
         $form->select('type', __('类型'))->options(['文章','视频']);
-        $form->image('thumbnail', __('缩略图'))->required()->attribute(['accept' => '.jpg,.png']);
-        $form->image('img', __('大图'))->attribute(['accept' => '.jpg,.png']);
-        $form->file('url', __('视频地址'))->attribute(['accept' => '.mp4']);
+        $form->image('thumbnail', __('缩略图'))->uniqueName()->required()->attribute(['accept' => '.jpg,.png']);
+        $form->image('img', __('大图'))->uniqueName()->attribute(['accept' => '.jpg,.png']);
+        $form->file('url', __('视频地址'))->uniqueName()->attribute(['accept' => '.mp4']);
+        $form->text('duration', __('视频时长'));
         $form->ckeditor('content', __('编辑器'))->required();
         $form->select('is_rec', __('是否推荐'))->options(['否','是']);
 

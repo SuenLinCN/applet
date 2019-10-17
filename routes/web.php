@@ -10,8 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-
-    return view('welcome');
+    header('HTTP/1.1 404 Moved Permanently');
+    exit("404");
 });
+
+Route::post('/admin/upload','UploadController@index');

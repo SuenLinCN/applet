@@ -47,6 +47,11 @@ class CategoryController extends Controller
         )
         ->body($this->form()->edit($id));
     }
+	
+    public function show($id, Content $content)
+    {
+        return redirect($this->form()->resource(-1));
+    }
     
     /**
      * Make a grid builder.
@@ -92,6 +97,11 @@ class CategoryController extends Controller
         $cate = new Category;
         $form = new Form($cate);
         
+        $form->tools(function (Form\Tools $tools) {
+            // 去掉`查看`按钮
+            $tools->disableView();
+        });
+        
         $dynamic = $cate->getParentID();
         $dynamic = array_column($dynamic, null,'id');
         $dynamic = Arr::pluck($dynamic,'title','id');
@@ -99,6 +109,9 @@ class CategoryController extends Controller
         $form->text('title', __('标题'))->rules('required');
         $form->image('icon', __('图标'))->attribute(['accept' => '.jpg,.png']);
         $form->text('weigh', __('权重'));
+        $form->text('seo_title', __('SEO 标题'));
+        $form->textarea('seo_keyword', __('SEO 关键字'));
+        $form->textarea('seo_description', __('SEO 描述'));
         return $form;
     }
 }

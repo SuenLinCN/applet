@@ -12,4 +12,8 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->resource('category', 'CategoryController');
     $router->resource('article', 'ArticleController');
+    $router->resource('draft', 'ArticleDraftController');
+    $router->resource('frontend/menu', 'FrontendMenuController');
+    $router->post('dispose', 'ArticleDraftController@draftDispose');
+    $router->post('publish', 'ArticleController@publishArticle');
 });
